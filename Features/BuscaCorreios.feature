@@ -1,0 +1,28 @@
+Feature: Busca de CEP e Rastreamento nos Correios
+    Como um usuário do site dos Correios
+    Eu quero buscar CEPs e rastrear encomendas
+    Para validar o comportamento do sistema
+
+Background:
+    Given que estou na página inicial dos Correios
+
+Scenario: Buscar CEP inexistente
+    When eu pesquisar pelo CEP "80700000"
+    Then o sistema deve informar que o CEP não existe
+    And eu volto para a página inicial
+
+Scenario: Buscar CEP existente e validar endereço
+    When eu pesquisar pelo CEP "01013-001"
+    Then o resultado deve ser "Rua Quinze de Novembro, São Paulo/SP"
+    And eu volto para a página inicial
+
+Scenario: Rastrear código inválido
+    When eu rastrear o código "SS987654321BR"
+    Then o sistema deve informar que o código não está correto
+
+@check_id @check_xpath @check_css
+Scenario: Validar elementos da página com diferentes seletores
+    When eu pesquisar pelo CEP "01013-001"
+    Then o elemento do resultado deve ser encontrado por ID
+    And o elemento do resultado deve ser encontrado por XPATH
+    And o elemento do resultado deve ser encontrado por CSS
