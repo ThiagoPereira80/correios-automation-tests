@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("correios_automation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02f9556858a70ba26849e2d110cbd3fd484dc475")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd48b987e6a8e95250b90d190697b2564d4c16b2")]
 [assembly: System.Reflection.AssemblyProductAttribute("correios_automation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("correios_automation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

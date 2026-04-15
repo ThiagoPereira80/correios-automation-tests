@@ -1,12 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Drivers",
     "\\Features",
-    "\\Hooks",
     "\\Pages",
     "\\StepDefinitions"
   ],
-  "SelectedNode": "\\correios-automation.csproj",
+  "SelectedNode": "\\Pages\\CorreiosHomePage.cs",
   "PreviewInSolutionExplorer": false
 }

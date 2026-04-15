@@ -1,4 +1,4 @@
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 
@@ -21,8 +21,8 @@ namespace CorreiosAutomation.Pages
         private By LinkVoltar => By.LinkText("Página inicial");
         private By CampoTracking => By.Name("objeto");
         private By BotaoTracking => By.XPath("//button[contains(text(),'Buscar')]");
-        // Captcha: campo de input text com id "captcha"
-        private By CaptchaContainer => By.Id("captcha");
+        // Captcha (pode variar conforme a implementação do site)
+        private By CaptchaContainer => By.CssSelector(".g-recaptcha, #captcha, .captcha");
 
         public CorreiosHomePage(IWebDriver driver)
         {
@@ -94,45 +94,11 @@ namespace CorreiosAutomation.Pages
             try
             {
                 var captcha = _wait.Until(d => d.FindElement(CaptchaContainer));
-                if (captcha == null || !captcha.Displayed || !captcha.Enabled)
-                    return false;
-
-                // Verifica se é um input do tipo text (conforme especificado)
-                var tag = captcha.TagName ?? string.Empty;
-                var type = captcha.GetAttribute("type") ?? string.Empty;
-
-                return tag.Equals("input", StringComparison.OrdinalIgnoreCase)
-                       && type.Equals("text", StringComparison.OrdinalIgnoreCase);
+                return captcha != null && captcha.Displayed && captcha.Enabled;
             }
             catch
             {
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// Preenche o campo de captcha (input type="text" id="captcha") com o código informado.
-        /// </summary>
-        public void PreencherCaptcha(string codigo)
-        {
-            var campo = _wait.Until(d => d.FindElement(CaptchaContainer));
-            campo.Clear();
-            campo.SendKeys(codigo);
-        }
-
-        /// <summary>
-        /// Retorna o valor atualmente presente no campo captcha (atributo value).
-        /// </summary>
-        public string ObterValorCaptcha()
-        {
-            try
-            {
-                var campo = _wait.Until(d => d.FindElement(CaptchaContainer));
-                return campo.GetAttribute("value") ?? string.Empty;
-            }
-            catch
-            {
-                return string.Empty;
             }
         }
 

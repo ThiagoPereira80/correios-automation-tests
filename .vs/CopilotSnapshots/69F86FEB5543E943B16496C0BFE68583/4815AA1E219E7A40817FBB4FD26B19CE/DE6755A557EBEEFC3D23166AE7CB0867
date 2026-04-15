@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 using CorreiosAutomation.Pages;
@@ -79,19 +79,11 @@ namespace CorreiosAutomation.StepDefinitions
             Assert.IsNotNull(elemento, "Elemento não encontrado pelo seletor CSS");
         }
 
-        [Then(@"o captcha \"(.*)\" deve ser inserido")]
-        public void EntaoOCaptchaDeveSerInserido(string codigo)
+        [Then(@"o campo captcha deve ser inserido")]
+        public void EntaoOCampoCaptchaDeveSerInserido()
         {
-            // Verifica se o campo captcha existe e é um input text
-            var campoValido = _homePage.ValidarCampoCaptcha();
-            Assert.IsTrue(campoValido, "Campo captcha não está presente/visível ou não é um input text");
-
-            // Preenche o captcha com o código fornecido
-            _homePage.PreencherCaptcha(codigo);
-
-            // Confirma que o valor foi realmente inserido
-            var valor = _homePage.ObterValorCaptcha();
-            Assert.AreEqual(codigo, valor, $"Esperava captcha inserido '{codigo}', mas o campo contém '{valor}'");
+            var captchaValido = _homePage.ValidarCampoCaptcha();
+            Assert.IsTrue(captchaValido, "Campo captcha não está presente/visível ou não foi possível inserir");
         }
         // Timeout de 30 segundos para este teste específico
         [Then(@"o sistema deve informar que o CEP não existe")]

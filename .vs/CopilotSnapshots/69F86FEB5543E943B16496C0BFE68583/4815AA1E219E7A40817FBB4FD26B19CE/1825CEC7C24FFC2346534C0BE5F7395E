@@ -1,4 +1,4 @@
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 
@@ -118,22 +118,6 @@ namespace CorreiosAutomation.Pages
             var campo = _wait.Until(d => d.FindElement(CaptchaContainer));
             campo.Clear();
             campo.SendKeys(codigo);
-        }
-
-        /// <summary>
-        /// Retorna o valor atualmente presente no campo captcha (atributo value).
-        /// </summary>
-        public string ObterValorCaptcha()
-        {
-            try
-            {
-                var campo = _wait.Until(d => d.FindElement(CaptchaContainer));
-                return campo.GetAttribute("value") ?? string.Empty;
-            }
-            catch
-            {
-                return string.Empty;
-            }
         }
 
         // Métodos para os seletores específicos do teste
