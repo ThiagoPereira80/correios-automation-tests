@@ -1,0 +1,40 @@
+using System;
+using System.Threading.Tasks;
+using NUnit.Framework;
+
+namespace CorreiosAutomation.Utils
+{
+	// Atributo personalizado de timeout
+	public class CustomTimeoutAttribute : PropertyAttribute
+	{
+		public CustomTimeoutAttribute(int milliseconds) : base("Timeout", milliseconds)
+		{
+		}
+	}
+
+	// Classe helper para gerenciar timeout
+	public static class TestTimeoutHelper
+	{
+		public static void ExecuteWithTimeout(Action action, int timeoutMilliseconds)
+		{
+			var task = Task.Run(action);
+			if (task.Wait(timeoutMilliseconds))
+			{
+				return;
+			}
+
+			throw new TimeoutException($"Teste excedeu o tempo limite de {timeoutMilliseconds}ms");
+		}
+
+		public static T ExecuteWithTimeout<T>(Func<T> func, int timeoutMilliseconds)
+		{
+			var task = Task.Run(func);
+			if (task.Wait(timeoutMilliseconds))
+			{
+				return task.Result;
+			}
+
+			throw new TimeoutException($"Teste excedeu o tempo limite de {timeoutMilliseconds}ms");
+		}
+	}
+}

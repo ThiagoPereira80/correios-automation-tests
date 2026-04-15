@@ -23,6 +23,8 @@ namespace CorreiosAutomation.Drivers
 
                 _driver = new ChromeDriver(options);
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+                _driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
+                _driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(10);
             }
             return _driver;
         }

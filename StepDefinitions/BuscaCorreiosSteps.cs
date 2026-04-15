@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 using CorreiosAutomation.Pages;
 using CorreiosAutomation.Drivers;
+using CorreiosAutomation.Utils;
 
 namespace CorreiosAutomation.StepDefinitions
 {
@@ -32,21 +33,7 @@ namespace CorreiosAutomation.StepDefinitions
             System.Threading.Thread.Sleep(1000); // Aguarda carregamento
         }
 
-        [Then(@"o sistema deve informar que o CEP não existe")]
-        public void EntaoOSistemaDeveInformarQueOCepNaoExiste()
-        {
-            var mensagemErro = _homePage.ObterMensagemCepNaoEncontrado();
-            Assert.IsTrue(mensagemErro.Contains("não encontrado") || mensagemErro.Contains("inexistente"),
-                $"Esperava mensagem de CEP não encontrado, mas obteve: {mensagemErro}");
-        }
 
-        [Then(@"o resultado deve ser ""(.*)""")]
-        public void EntaoOResultadoDeveSer(string enderecoEsperado)
-        {
-            _resultadoEndereco = _homePage.ObterEnderecoEncontrado();
-            Assert.AreEqual(enderecoEsperado, _resultadoEndereco,
-                $"Endereço encontrado: {_resultadoEndereco} - Esperado: {enderecoEsperado}");
-        }
 
         [Then(@"eu volto para a página inicial")]
         public void EntaoEuVoltoParaAPaginaInicial()
@@ -90,6 +77,26 @@ namespace CorreiosAutomation.StepDefinitions
         {
             var elemento = _homePage.ObterResultadoPorCss();
             Assert.IsNotNull(elemento, "Elemento não encontrado pelo seletor CSS");
+        }
+        // Timeout de 30 segundos para este teste específico
+        [Then(@"o sistema deve informar que o CEP não existe")]
+        [Timeout(30000)]  // NUnit timeout padrão
+        public void EntaoOSistemaDeveInformarQueOCepNaoExiste()
+        {
+            TestTimeoutHelper.ExecuteWithTimeout(() =>
+            {
+                var mensagemErro = _homePage.ObterMensagemCepNaoEncontrado();
+                Assert.IsTrue(mensagemErro.Contains("não encontrado"));
+            }, 10000); // 10 segundos para esta operação
+        }
+
+        // Com timeout personalizado
+        [Then(@"o resultado deve ser ""(.*)""")]
+        [CustomTimeout(20000)] // Timeout personalizado de 20 segundos
+        public void EntaoOResultadoDeveSer(string enderecoEsperado)
+        {
+            _resultadoEndereco = _homePage.ObterEnderecoEncontrado();
+            Assert.AreEqual(enderecoEsperado, _resultadoEndereco);
         }
     }
 }

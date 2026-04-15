@@ -25,7 +25,7 @@ Os cenários cobertos são:
 
 ## Tecnologias utilizadas
 
-* .NET 6
+* .NET 10
 * SpecFlow (BDD com Gherkin)
 * NUnit
 * Selenium WebDriver

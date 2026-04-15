@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- Configuração de timeout global -->
+  <RunConfiguration>
+    <MaxCpuCount>0</MaxCpuCount>
+    <TestSessionTimeout>120000</TestSessionTimeout> <!-- 2 minutos timeout total -->
+    <TreatNoTestsAsError>true</TreatNoTestsAsError>
+  </RunConfiguration>
+  
+  <!-- Timeout específico para testes longos -->
+  <NUnit>
+    <DefaultTimeout>30000</DefaultTimeout> <!-- 30 segundos por teste -->
+    <DefaultAssertTimeout>10000</DefaultAssertTimeout> <!-- 10 segundos por assert -->
+    <WorkDirectory>TestResults</WorkDirectory>
+  </NUnit>
+  
+  <!-- Configuração paralela -->
+  <TestRunParameters>
+    <Parameter name="webDriverTimeout" value="30" />
+    <Parameter name="pageLoadTimeout" value="60" />
+  </TestRunParameters>
+</RunSettings>

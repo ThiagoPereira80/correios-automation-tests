@@ -1,6 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- AssemblyName sem hífen para evitar identificadores inválidos gerados (ex: pelo SpecFlow) -->
+    <AssemblyName>correios_automation</AssemblyName>
+    <RootNamespace>correios_automation</RootNamespace>
+	
+	<!-- Timeout global para execução de testes -->
+	<TestTimeout>120000</TestTimeout>
+	<!-- 2 minutos -->
+
+	<!-- Paralelismo -->
+	<ParallelizeTestCollections>true</ParallelizeTestCollections>
+	<MaxParallelThreads>4</MaxParallelThreads>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,4 +23,11 @@
     <PackageReference Include="Selenium.WebDriver" Version="4.15.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="120.0.6099.7100" />
   </ItemGroup>
+	<!-- Configuração de timeout para CI/CD -->
+	<Target Name="CheckTimeout" BeforeTargets="VSTest">
+		<PropertyGroup>
+			<VSTestTimeout Condition="'$(VSTestTimeout)' == ''">120000</VSTestTimeout>
+		</PropertyGroup>
+		<Message Text="Test timeout configured: $(VSTestTimeout) ms" Importance="High" />
+	</Target>
 </Project>

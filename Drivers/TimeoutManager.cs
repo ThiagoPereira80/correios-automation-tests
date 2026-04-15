@@ -1,0 +1,45 @@
+using System;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+
+namespace CorreiosAutomation.Drivers
+{
+    public static class TimeoutManager
+    {
+        private static int _defaultTimeout = 30; // segundos
+        private static DateTime _testStartTime;
+        private static int _globalTimeout = 120; // segundos
+
+        public static void InitializeTestTimeout()
+        {
+            _testStartTime = DateTime.Now;
+        }
+
+        public static void CheckGlobalTimeout()
+        {
+            var elapsed = DateTime.Now - _testStartTime;
+            if (elapsed.TotalSeconds > _globalTimeout)
+            {
+                var error = $"Teste excedeu timeout global de {_globalTimeout} segundos";
+                WebDriverManager.QuitDriver();
+                throw new TimeoutException(error);
+            }
+        }
+
+        public static WebDriverWait CreateWait(IWebDriver driver, int seconds = -1)
+        {
+            if (seconds == -1) seconds = _defaultTimeout;
+            return new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+        }
+
+        public static void SetDefaultTimeout(int seconds)
+        {
+            _defaultTimeout = seconds;
+        }
+
+        public static void SetGlobalTimeout(int seconds)
+        {
+            _globalTimeout = seconds;
+        }
+    }
+}
