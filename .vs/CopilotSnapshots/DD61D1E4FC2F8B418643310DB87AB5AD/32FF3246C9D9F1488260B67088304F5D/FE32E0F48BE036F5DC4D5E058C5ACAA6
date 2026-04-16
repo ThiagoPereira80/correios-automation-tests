@@ -1,0 +1,149 @@
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using TechTalk.SpecFlow;
+using CorreiosAutomation.Pages;
+using CorreiosAutomation.Drivers;
+using CorreiosAutomation.Utils;
+
+namespace CorreiosAutomation.StepDefinitions
+{
+    [Binding]
+    public class BuscaCorreiosSteps
+    {
+        private readonly IWebDriver _driver;
+        private readonly CorreiosHomePage _homePage;
+        private readonly CorreiosTrackingPage _trackingPage;
+        private string _resultadoEndereco;
+
+        public BuscaCorreiosSteps()
+        {
+            _driver = WebDriverManager.GetDriver();
+            _homePage = new CorreiosHomePage(_driver);
+            _trackingPage = new CorreiosTrackingPage(_driver);
+        }
+
+        [Given(@"que estou na página inicial dos Correios")]
+        public void DadoQueEstouNaPaginaInicialDosCorreios()
+        {
+            _homePage.NavigateTo();
+        }
+
+        [When(@"eu pesquisar pelo CEP ""(.*)""")]
+        public void QuandoEuPesquisarPeloCep(string cep)
+        {
+            _homePage.BuscarCep(cep);
+            System.Threading.Thread.Sleep(1000); // Aguarda carregamento
+        }
+
+
+
+        [Then(@"eu volto para a página inicial")]
+        public void EntaoEuVoltoParaAPaginaInicial()
+        {
+            _homePage.VoltarParaPaginaInicial();
+        }
+
+        [When(@"eu rastrear o código ""(.*)""")]
+        public void QuandoEuRastrearOCodigo(string codigo)
+        {
+            // Navega para a página de rastreamento e realiza a busca
+            _trackingPage.NavigateTo();
+            _trackingPage.RastrearEncomenda(codigo);
+            System.Threading.Thread.Sleep(1000);
+        }
+
+        [Then(@"o sistema deve informar que o código não está correto")]
+        public void EntaoOSistemaDeveInformarQueOCodigoNaoEstaCorreto()
+        {
+            var mensagemErro = _trackingPage.ObterMensagemRastreamentoInvalido();
+            Assert.IsTrue(mensagemErro.Contains("não encontrado") || mensagemErro.Contains("inválido"),
+                $"Esperava mensagem de código inválido, mas obteve: {mensagemErro}");
+        }
+
+        // ========== VALIDAÇÕES DOS SELETORES (ID, XPATH, CSS) ==========
+
+        [Then(@"o elemento do resultado deve ser encontrado por ID")]
+        public void EntaoElementoEncontradoPorId()
+        {
+            var elemento = _homePage.ObterResultadoPorId();
+            Assert.IsNotNull(elemento, "Elemento não encontrado pelo seletor ID");
+        }
+
+        [Then(@"o elemento do resultado deve ser encontrado por XPATH")]
+        public void EntaoElementoEncontradoPorXpath()
+        {
+            var elemento = _homePage.ObterResultadoPorXPath();
+            Assert.IsNotNull(elemento, "Elemento não encontrado pelo seletor XPATH");
+        }
+
+        [Then(@"o elemento do resultado deve ser encontrado por CSS")]
+        public void EntaoElementoEncontradoPorCss()
+        {
+            var elemento = _homePage.ObterResultadoPorCss();
+            Assert.IsNotNull(elemento, "Elemento não encontrado pelo seletor CSS");
+        }
+
+        [Then(@"o captcha \"(.*)\" deve ser inserido")]
+        public void EntaoOCaptchaDeveSerInserido(string codigo)
+        {
+            // Verifica se o campo captcha existe e é um input text
+            var campoValido = _homePage.ValidarCampoCaptcha();
+            Assert.IsTrue(campoValido, "Campo captcha não está presente/visível ou não é um input text");
+
+            // Tenta preencher e submeter o captcha até 3 vezes. Se após 3 tentativas continuar sem resultado,
+            // encerra o teste para evitar tempo excessivo.
+            const int maxTentativas = 3;
+            var sucesso = false;
+
+            for (int tentativa = 1; tentativa <= maxTentativas; tentativa++)
+            {
+                _homePage.PreencherCaptcha(codigo);
+
+                // Confirma que o valor foi realmente inserido
+                var valor = _homePage.ObterValorCaptcha();
+                Assert.AreEqual(codigo, valor, $"Esperava captcha inserido '{codigo}', mas o campo contém '{valor}'");
+
+                // Submete a busca e aguarda resposta curta
+                _homePage.SubmeterBusca();
+                System.Threading.Thread.Sleep(1000);
+
+                // Verifica se houve resultado (endereço encontrado)
+                var endereco = _homePage.ObterEnderecoEncontrado();
+                if (!string.IsNullOrWhiteSpace(endereco))
+                {
+                    sucesso = true;
+                    break;
+                }
+
+                // Se houver uma mensagem de erro contendo referência a captcha, considera tentativa falha e repete
+                var mensagemErro = _homePage.ObterMensagemErro();
+                if (tentativa == maxTentativas)
+                {
+                    Assert.Fail($"Captcha inserido incorretamente por {maxTentativas} tentativas. Encerrando o teste para evitar tempo excessivo. Mensagem de erro: {mensagemErro}");
+                }
+            }
+
+            Assert.IsTrue(sucesso, "Não foi possível obter resultado válido após tentar preencher o captcha.");
+        }
+        // Timeout de 30 segundos para este teste específico
+        [Then(@"o sistema deve informar que o CEP não existe")]
+        [Timeout(30000)]  // NUnit timeout padrão
+        public void EntaoOSistemaDeveInformarQueOCepNaoExiste()
+        {
+            TestTimeoutHelper.ExecuteWithTimeout(() =>
+            {
+                var mensagemErro = _homePage.ObterMensagemCepNaoEncontrado();
+                Assert.IsTrue(mensagemErro.Contains("não encontrado"));
+            }, 10000); // 10 segundos para esta operação
+        }
+
+        // Com timeout personalizado
+        [Then(@"o resultado deve ser ""(.*)""")]
+        [CustomTimeout(20000)] // Timeout personalizado de 20 segundos
+        public void EntaoOResultadoDeveSer(string enderecoEsperado)
+        {
+            _resultadoEndereco = _homePage.ObterEnderecoEncontrado();
+            Assert.AreEqual(enderecoEsperado, _resultadoEndereco);
+        }
+    }
+}

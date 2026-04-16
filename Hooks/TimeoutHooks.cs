@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using TechTalk.SpecFlow;
 using CorreiosAutomation.Drivers;
+using NUnit.Framework;
 
 namespace CorreiosAutomation.Hooks
 {
@@ -11,7 +12,7 @@ namespace CorreiosAutomation.Hooks
     {
         private static Timer _timeoutTimer;
         private static Stopwatch _stopwatch;
-        private static int _scenarioTimeoutSeconds = 60; // 60 segundos por cenário
+        private static int _scenarioTimeoutSeconds = 10; // 30 segundos por cenário (reduzido de 60)
 
         [BeforeScenario]
         public static void BeforeScenarioWithTimeout()
@@ -27,22 +28,35 @@ namespace CorreiosAutomation.Hooks
         {
             _stopwatch?.Stop();
             _timeoutTimer?.Dispose();
+
+            // Garante que o driver seja finalizado após cada cenário para evitar processos pendentes
+            try
+            {
+                Drivers.WebDriverManager.QuitDriver();
+            }
+            catch (Exception ex)
+            {
+                TestContext.Progress.WriteLine($"Erro ao finalizar WebDriver após cenário: {ex.Message}");
+            }
         }
 
         private static void CheckTimeout(object state)
         {
             if (_stopwatch != null && _stopwatch.Elapsed.TotalSeconds >= _scenarioTimeoutSeconds)
             {
-                Console.WriteLine($"⚠️ Timeout atingido: {_scenarioTimeoutSeconds} segundos");
+                TestContext.Progress.WriteLine($"⚠️ Timeout atingido: {_scenarioTimeoutSeconds} segundos");
+                CorreiosAutomation.Utils.RunLog.Write($"⚠️ Timeout atingido: {_scenarioTimeoutSeconds} segundos");
 
                 // Tenta fechar o browser graciosamente
                 try
                 {
                     WebDriverManager.QuitDriver();
+                    CorreiosAutomation.Utils.RunLog.Write("WebDriver finalizado no CheckTimeout");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Erro ao fechar driver: {ex.Message}");
+                    TestContext.Progress.WriteLine($"Erro ao fechar driver: {ex.Message}");
+                    CorreiosAutomation.Utils.RunLog.Write($"Erro ao fechar driver: {ex.Message}");
                 }
 
                 // Força o término do processo de teste

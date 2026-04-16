@@ -1,0 +1,59 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace CorreiosAutomation.Components
+{
+    public class CaptchaComponent
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+        private readonly By _captchaBy = By.Id("captcha");
+
+        public CaptchaComponent(IWebDriver driver, TimeSpan? timeout = null)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(_driver, timeout ?? TimeSpan.FromSeconds(10));
+        }
+
+        public bool ValidarCampoCaptcha()
+        {
+            try
+            {
+                var captcha = _wait.Until(d => d.FindElement(_captchaBy));
+                if (captcha == null || !captcha.Displayed || !captcha.Enabled)
+                    return false;
+
+                var tag = captcha.TagName ?? string.Empty;
+                var type = captcha.GetAttribute("type") ?? string.Empty;
+
+                return tag.Equals("input", StringComparison.OrdinalIgnoreCase)
+                       && type.Equals("text", StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void PreencherCaptcha(string codigo)
+        {
+            var campo = _wait.Until(d => d.FindElement(_captchaBy));
+            campo.Clear();
+            campo.SendKeys(codigo);
+        }
+
+        public string ObterValorCaptcha()
+        {
+            try
+            {
+                var campo = _wait.Until(d => d.FindElement(_captchaBy));
+                return campo.GetAttribute("value") ?? string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+    }
+}

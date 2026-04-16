@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
@@ -25,12 +26,15 @@ namespace CorreiosAutomation.StepDefinitions
         [Given(@"que estou na página inicial dos Correios")]
         public void DadoQueEstouNaPaginaInicialDosCorreios()
         {
+            Console.WriteLine("[Step] Navegando para página inicial dos Correios");
             _homePage.NavigateTo();
         }
 
         [When(@"eu pesquisar pelo CEP ""(.*)""")]
         public void QuandoEuPesquisarPeloCep(string cep)
         {
+            TestContext.Progress.WriteLine($"[Step] Pesquisando CEP: {cep}");
+            CorreiosAutomation.Utils.RunLog.Write($"[Step] Pesquisando CEP: {cep}");
             _homePage.BuscarCep(cep);
             System.Threading.Thread.Sleep(1000); // Aguarda carregamento
         }
@@ -46,10 +50,31 @@ namespace CorreiosAutomation.StepDefinitions
         [When(@"eu rastrear o código ""(.*)""")]
         public void QuandoEuRastrearOCodigo(string codigo)
         {
+            TestContext.Progress.WriteLine($"[Step] Rastreando código: {codigo}");
+            CorreiosAutomation.Utils.RunLog.Write($"[Step] Rastreando código: {codigo}");
             // Navega para a página de rastreamento e realiza a busca
             _trackingPage.NavigateTo();
             _trackingPage.RastrearEncomenda(codigo);
             System.Threading.Thread.Sleep(1000);
+
+            // Se o captcha estiver presente na página de rastreio, tenta submetê-lo automaticamente
+            // usando rotina reutilizável (3 tentativas, 1s entre tentativas) com código padrão '1234'.
+            try
+            {
+                if (_trackingPage.ValidarCampoCaptcha())
+                {
+                    var tentou = _trackingPage.TentarSubmeterCaptchaRastreamento("1234", 3, 1000);
+                    if (!tentou)
+                    {
+                        Assert.Fail("Captcha de rastreio inválido após 3 tentativas. Encerrando o teste.");
+                    }
+                }
+            }
+            catch
+            {
+                // Se qualquer exceção ocorrer ao lidar com captcha, propagamos para falhar o teste
+                throw;
+            }
         }
 
         [Then(@"o sistema deve informar que o código não está correto")]
@@ -83,19 +108,20 @@ namespace CorreiosAutomation.StepDefinitions
             Assert.IsNotNull(elemento, "Elemento não encontrado pelo seletor CSS");
         }
 
-        [Then(@"o captcha \"(.*)\" deve ser inserido")]
+        [Then(@"o captcha ""(.*)"" deve ser inserido")]
         public void EntaoOCaptchaDeveSerInserido(string codigo)
         {
             // Verifica se o campo captcha existe e é um input text
             var campoValido = _homePage.ValidarCampoCaptcha();
             Assert.IsTrue(campoValido, "Campo captcha não está presente/visível ou não é um input text");
 
-            // Preenche o captcha com o código fornecido
-            _homePage.PreencherCaptcha(codigo);
-
-            // Confirma que o valor foi realmente inserido
-            var valor = _homePage.ObterValorCaptcha();
-            Assert.AreEqual(codigo, valor, $"Esperava captcha inserido '{codigo}', mas o campo contém '{valor}'");
+            // Usa rotina reutilizável para tentar submeter o captcha (até 3 tentativas, 1s entre tentativas)
+            var sucesso = _homePage.TentarSubmeterCaptchaBusca(codigo, 3, 1000);
+            if (!sucesso)
+            {
+                var mensagemErro = _homePage.ObterMensagemErro();
+                Assert.Fail($"Captcha inserido incorretamente por 3 tentativas. Encerrando o teste para evitar tempo excessivo. Mensagem de erro: {mensagemErro}");
+            }
         }
         // Timeout de 30 segundos para este teste específico
         [Then(@"o sistema deve informar que o CEP não existe")]

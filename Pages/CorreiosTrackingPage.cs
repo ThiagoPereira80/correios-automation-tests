@@ -29,7 +29,7 @@ namespace CorreiosAutomation.Pages
         public CorreiosTrackingPage(IWebDriver driver)
         {
             _driver = driver;
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
             _captcha = new CaptchaComponent(driver);
         }
 
@@ -72,6 +72,8 @@ namespace CorreiosAutomation.Pages
                 return string.Empty;
             }
 
+        }
+
         public bool ValidarCampoCaptcha()
         {
             return _captcha.ValidarCampoCaptcha();
@@ -86,6 +88,17 @@ namespace CorreiosAutomation.Pages
         {
             return _captcha.ObterValorCaptcha();
         }
+
+        // Tenta submeter o rastreio preenchendo o captcha até maxAttempts.
+        public bool TentarSubmeterCaptchaRastreamento(string codigoCaptcha, int maxTentativas = 3, int atrasoMs = 1000)
+        {
+            var refreshSelector = By.CssSelector("i.fa.fa-refresh");
+            return _captcha.TrySubmitWithCaptcha(() => _driver.FindElement(BotaoTracking).Click(), () =>
+            {
+                var msg = ObterMensagemRastreamentoInvalido();
+                // sucesso se não houver a mensagem de captcha inválido
+                return string.IsNullOrWhiteSpace(msg) || msg.IndexOf("Captcha inválido", StringComparison.OrdinalIgnoreCase) < 0;
+            }, codigoCaptcha, maxTentativas, atrasoMs, refreshSelector);
         }
     }
 }

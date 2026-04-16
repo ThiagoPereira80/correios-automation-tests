@@ -1,0 +1,103 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+using CorreiosAutomation.Components;
+
+namespace CorreiosAutomation.Pages
+{
+    public class CorreiosTrackingPage
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        private const string UrlTracking = "https://rastreamento.correios.com.br/app/index.php";
+
+        // Campo de digitação do código a ser rastreado
+        // <input type="text" id="objeto" name="objeto" class="form-control" placeholder="AA123456785BR" value="" required="">
+        private By CampoTracking => By.Id("objeto");
+
+        // Botão Consultar (rastreio)
+        // <button type="button" id="b-pesquisar" name="b-pesquisar" class="btn btn-primary botao-principal">Consultar</button>
+        private By BotaoTracking => By.Id("b-pesquisar");
+
+        // Elemento de mensagem exibida após o rastreio.
+        // Pode variar entre id/class; contemplamos seletores comuns (id ou classes usadas em diferentes versões).
+        private By MensagemErroTracking => By.XPath("//*[@id=\"alerta\"]/div[1]");
+
+        private readonly CaptchaComponent _captcha;
+
+        public CorreiosTrackingPage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _captcha = new CaptchaComponent(driver);
+        }
+
+        public void NavigateTo()
+        {
+            _driver.Navigate().GoToUrl(UrlTracking);
+            _driver.Manage().Window.Maximize();
+        }
+
+        public void RastrearEncomenda(string codigo)
+        {
+            var campo = _wait.Until(d => d.FindElement(CampoTracking));
+            campo.Clear();
+            campo.SendKeys(codigo);
+            _driver.FindElement(BotaoTracking).Click();
+        }
+
+        public string ObterMensagemRastreamentoInvalido()
+        {
+            try
+            {
+                // Aguarda até que o elemento exista e contenha texto não vazio
+                var msgEl = _wait.Until(d =>
+                {
+                    try
+                    {
+                        var e = d.FindElement(MensagemErroTracking);
+                        return !string.IsNullOrWhiteSpace(e.Text) ? e : null;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                });
+
+                return msgEl?.Text ?? string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+
+        }
+
+        public bool ValidarCampoCaptcha()
+        {
+            return _captcha.ValidarCampoCaptcha();
+        }
+
+        public void PreencherCaptcha(string codigo)
+        {
+            _captcha.PreencherCaptcha(codigo);
+        }
+
+        public string ObterValorCaptcha()
+        {
+            return _captcha.ObterValorCaptcha();
+        }
+
+        // Tenta submeter o rastreio preenchendo o captcha até maxAttempts.
+        public bool TentarSubmeterCaptchaRastreamento(string codigoCaptcha, int maxTentativas = 3, int atrasoMs = 1000)
+        {
+            return _captcha.TrySubmitWithCaptcha(() => _driver.FindElement(BotaoTracking).Click(), () =>
+            {
+                var msg = ObterMensagemRastreamentoInvalido();
+                // sucesso se não houver a mensagem de captcha inválido
+                return string.IsNullOrWhiteSpace(msg) || msg.IndexOf("Captcha inválido", StringComparison.OrdinalIgnoreCase) < 0;
+            }, codigoCaptcha, maxTentativas, atrasoMs);
+        }
+    }
+}

@@ -1,0 +1,146 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Linq;
+using CorreiosAutomation.Components;
+
+namespace CorreiosAutomation.Pages
+{
+    public class CorreiosHomePage
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        // URL da busca de CEP
+        private const string UrlCep = "https://buscacepinter.correios.com.br/app/cep/index.php";
+
+        // Seletores dos elementos (ID, XPATH, CSS)
+        private By CampoBuscaCepId => By.Id("cep"); // conforme site real
+        private By BotaoBuscarCepId => By.Id("btn_pesquisar"); // conforme site real
+        private By ResultadoEnderecoXpath => By.XPath("//*[@id='resultado-DNEC']/tbody/tr/td[1] | //*[@id='resultado-DNEC']/tbody/tr/td[3]");
+        private By ResultadoEnderecoCss => By.CssSelector("#resultado-DNEC > tbody > tr > td:nth-child(1)");
+        private By MensagemErroCep => By.ClassName("mensagem");
+        private readonly CaptchaComponent _captcha;
+
+
+        public CorreiosHomePage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
+            _captcha = new CaptchaComponent(driver);
+        }
+
+        public void NavigateTo()
+        {
+            _driver.Navigate().GoToUrl(UrlCep);
+            _driver.Manage().Window.Maximize();
+        }
+
+        public void BuscarCep(string cep)
+        {
+            var campo = _wait.Until(d => d.FindElement(CampoBuscaCepId));
+            campo.Clear();
+            campo.SendKeys(cep);
+            _driver.FindElement(BotaoBuscarCepId).Click();
+        }
+
+        public string ObterMensagemCepNaoEncontrado()
+        {
+            try
+            {
+                var msg = _wait.Until(d => d.FindElement(MensagemErroCep));
+                return msg.Text;
+            }
+            catch
+            {
+                return "Mensagem não encontrada";
+            }
+        }
+
+        public string ObterEnderecoEncontrado()
+        {
+            try
+            {
+                var elementos = _driver.FindElements(ResultadoEnderecoXpath);
+                var endereco = string.Join(" ", elementos.Select(e => e.Text).Where(s => !string.IsNullOrWhiteSpace(s)));
+                return endereco;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public void VoltarParaPaginaInicial()
+        {
+            _driver.Navigate().Back();
+            // Ou clicar no link de voltar
+            // _driver.FindElement(LinkVoltar).Click();
+        }
+
+
+
+        public bool ValidarCampoCaptcha()
+        {
+            return _captcha.ValidarCampoCaptcha();
+        }
+
+        public void PreencherCaptcha(string codigo)
+        {
+            _captcha.PreencherCaptcha(codigo);
+        }
+
+        public string ObterValorCaptcha()
+        {
+            return _captcha.ObterValorCaptcha();
+        }
+
+        // Clica no botão de buscar (reutilizado para submeter após preencher captcha)
+        public void SubmeterBusca()
+        {
+            _driver.FindElement(BotaoBuscarCepId).Click();
+        }
+
+        // Mensagem genérica de erro exibida na página (pode ser usada para capturar mensagens de captcha inválido)
+        public string ObterMensagemErro()
+        {
+            try
+            {
+                var msg = _wait.Until(d => d.FindElement(MensagemErroCep));
+                return msg.Text;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        // Tenta submeter a busca preenchendo o captcha até maxTentativas.
+        public bool TentarSubmeterCaptchaBusca(string codigo, int maxTentativas = 3, int atrasoMs = 1000)
+        {
+            return _captcha.TrySubmitWithCaptcha(() => SubmeterBusca(), () =>
+            {
+                var endereco = ObterEnderecoEncontrado();
+                // sucesso se encontrou endereço
+                return !string.IsNullOrWhiteSpace(endereco);
+            }, codigo, maxTentativas, atrasoMs);
+        }
+
+        // Métodos para os seletores específicos do teste
+
+        public IWebElement ObterResultadoPorId()
+        {
+            return _wait.Until(d => d.FindElement(By.Id("resultado-endereco"))); // Ajustar ID real
+        }
+
+        public IWebElement ObterResultadoPorXPath()
+        {
+            return _wait.Until(d => d.FindElement(By.XPath("//div[@class='resultado-busca']")));
+        }
+
+        public IWebElement ObterResultadoPorCss()
+        {
+            return _wait.Until(d => d.FindElement(By.CssSelector("div.resultado-busca")));
+        }
+    }
+}

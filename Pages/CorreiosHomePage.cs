@@ -26,7 +26,7 @@ namespace CorreiosAutomation.Pages
         public CorreiosHomePage(IWebDriver driver)
         {
             _driver = driver;
-            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(5));
             _captcha = new CaptchaComponent(driver);
         }
 
@@ -93,6 +93,39 @@ namespace CorreiosAutomation.Pages
         public string ObterValorCaptcha()
         {
             return _captcha.ObterValorCaptcha();
+        }
+
+        // Clica no botão de buscar (reutilizado para submeter após preencher captcha)
+        public void SubmeterBusca()
+        {
+            _driver.FindElement(BotaoBuscarCepId).Click();
+        }
+
+        // Mensagem genérica de erro exibida na página (pode ser usada para capturar mensagens de captcha inválido)
+        public string ObterMensagemErro()
+        {
+            try
+            {
+                var msg = _wait.Until(d => d.FindElement(MensagemErroCep));
+                return msg.Text;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        // Tenta submeter a busca preenchendo o captcha até maxTentativas.
+        public bool TentarSubmeterCaptchaBusca(string codigo, int maxTentativas = 3, int atrasoMs = 1000)
+        {
+            // seletor do botão de renovar captcha conforme fornecido: <i class="fa fa-refresh" ...>
+            var refreshSelector = By.CssSelector("i.fa.fa-refresh");
+            return _captcha.TrySubmitWithCaptcha(() => SubmeterBusca(), () =>
+            {
+                var endereco = ObterEnderecoEncontrado();
+                // sucesso se encontrou endereço
+                return !string.IsNullOrWhiteSpace(endereco);
+            }, codigo, maxTentativas, atrasoMs, refreshSelector);
         }
 
         // Métodos para os seletores específicos do teste

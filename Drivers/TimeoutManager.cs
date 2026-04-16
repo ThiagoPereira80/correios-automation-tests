@@ -6,9 +6,9 @@ namespace CorreiosAutomation.Drivers
 {
     public static class TimeoutManager
     {
-        private static int _defaultTimeout = 30; // segundos
+        private static int _defaultTimeout = 5; // segundos (reduzido de 30)
         private static DateTime _testStartTime;
-        private static int _globalTimeout = 120; // segundos
+        private static int _globalTimeout = 10; // segundos (reduzido de 120)
 
         public static void InitializeTestTimeout()
         {

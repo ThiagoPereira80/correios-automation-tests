@@ -1,0 +1,28 @@
+﻿using System;
+using System.IO;
+using System.Text;
+
+namespace CorreiosAutomation.Utils
+{
+    public static class RunLog
+    {
+        private static readonly object _lock = new object();
+        private static readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "test_run.log");
+
+        public static void Write(string message)
+        {
+            try
+            {
+                var line = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {message}{Environment.NewLine}";
+                lock (_lock)
+                {
+                    File.AppendAllText(_path, line, Encoding.UTF8);
+                }
+            }
+            catch
+            {
+                // não falha em caso de erro de log
+            }
+        }
+    }
+}
