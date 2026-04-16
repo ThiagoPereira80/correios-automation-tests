@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\workspace\\correios-automation-tests\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Features\\BuscaCorreios.feature||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Features\\BuscaCorreios.feature||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\StepDefinitions\\BuscaCorreiosSteps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:StepDefinitions\\BuscaCorreiosSteps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,24 +11,16 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Pages\\CorreiosHomePage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Drivers\\WebDriverManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Drivers\\WebDriverManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Pages\\Components\\CaptchaComponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Pages\\Components\\CaptchaComponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Hooks\\TimeoutHooks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Hooks\\TimeoutHooks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Pages\\CorreiosTrackingPage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Pages\\CorreiosTrackingPage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\correios-automation.csproj||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:correios-automation.csproj||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Utils\\TestTimeout.cs||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Utils\\TestTimeout.cs||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Drivers\\TimeoutManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Drivers\\TimeoutManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\Features\\BuscaCorreios.feature||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Features\\BuscaCorreios.feature||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\workspace\\correios-automation-tests\\.runsettings||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -54,17 +42,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "CaptchaComponent.cs",
+              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Pages\\Components\\CaptchaComponent.cs",
+              "RelativeDocumentMoniker": "Pages\\Components\\CaptchaComponent.cs",
+              "ToolTip": "C:\\workspace\\correios-automation-tests\\Pages\\Components\\CaptchaComponent.cs",
+              "RelativeToolTip": "Pages\\Components\\CaptchaComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T13:06:34.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CorreiosTrackingPage.cs",
+              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Pages\\CorreiosTrackingPage.cs",
+              "RelativeDocumentMoniker": "Pages\\CorreiosTrackingPage.cs",
+              "ToolTip": "C:\\workspace\\correios-automation-tests\\Pages\\CorreiosTrackingPage.cs",
+              "RelativeToolTip": "Pages\\CorreiosTrackingPage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T12:18:53.79Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "CorreiosHomePage.cs",
               "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Pages\\CorreiosHomePage.cs",
               "RelativeDocumentMoniker": "Pages\\CorreiosHomePage.cs",
               "ToolTip": "C:\\workspace\\correios-automation-tests\\Pages\\CorreiosHomePage.cs",
               "RelativeToolTip": "Pages\\CorreiosHomePage.cs",
-              "ViewState": "AgIAAHUAAAAAAAAAAAAjwBAAAABUAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T22:31:36.15Z",
               "EditorCaption": ""
@@ -72,92 +86,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BuscaCorreios.feature",
-              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Features\\BuscaCorreios.feature",
-              "RelativeDocumentMoniker": "Features\\BuscaCorreios.feature",
-              "ToolTip": "C:\\workspace\\correios-automation-tests\\Features\\BuscaCorreios.feature",
-              "RelativeToolTip": "Features\\BuscaCorreios.feature",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-15T18:56:49.708Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "BuscaCorreiosSteps.cs",
               "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\StepDefinitions\\BuscaCorreiosSteps.cs",
               "RelativeDocumentMoniker": "StepDefinitions\\BuscaCorreiosSteps.cs",
               "ToolTip": "C:\\workspace\\correios-automation-tests\\StepDefinitions\\BuscaCorreiosSteps.cs",
               "RelativeToolTip": "StepDefinitions\\BuscaCorreiosSteps.cs",
-              "ViewState": "AgIAAEwAAAAAAAAAAAAjwHIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAADQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-15T21:50:39.012Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "WebDriverManager.cs",
-              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Drivers\\WebDriverManager.cs",
-              "RelativeDocumentMoniker": "Drivers\\WebDriverManager.cs",
-              "ToolTip": "C:\\workspace\\correios-automation-tests\\Drivers\\WebDriverManager.cs",
-              "RelativeToolTip": "Drivers\\WebDriverManager.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAUwCYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:54:13.336Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "TimeoutHooks.cs",
-              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Hooks\\TimeoutHooks.cs",
-              "RelativeDocumentMoniker": "Hooks\\TimeoutHooks.cs",
-              "ToolTip": "C:\\workspace\\correios-automation-tests\\Hooks\\TimeoutHooks.cs",
-              "RelativeToolTip": "Hooks\\TimeoutHooks.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAQwDQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:47:26.8Z"
+              "Title": "BuscaCorreios.feature",
+              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Features\\BuscaCorreios.feature",
+              "RelativeDocumentMoniker": "Features\\BuscaCorreios.feature",
+              "ToolTip": "C:\\workspace\\correios-automation-tests\\Features\\BuscaCorreios.feature",
+              "RelativeToolTip": "Features\\BuscaCorreios.feature",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-15T18:56:49.708Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "correios-automation.csproj",
-              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\correios-automation.csproj",
-              "RelativeDocumentMoniker": "correios-automation.csproj",
-              "ToolTip": "C:\\workspace\\correios-automation-tests\\correios-automation.csproj",
-              "RelativeToolTip": "correios-automation.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-04-15T18:53:59.09Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "TimeoutManager.cs",
-              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Drivers\\TimeoutManager.cs",
-              "RelativeDocumentMoniker": "Drivers\\TimeoutManager.cs",
-              "ToolTip": "C:\\workspace\\correios-automation-tests\\Drivers\\TimeoutManager.cs",
-              "RelativeToolTip": "Drivers\\TimeoutManager.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAAwCwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:48:36.468Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "TestTimeout.cs",
-              "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Utils\\TestTimeout.cs",
-              "RelativeDocumentMoniker": "Utils\\TestTimeout.cs",
-              "ToolTip": "C:\\workspace\\correios-automation-tests\\Utils\\TestTimeout.cs",
-              "RelativeToolTip": "Utils\\TestTimeout.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-15T21:44:26.041Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
               "Title": ".runsettings",
               "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\.runsettings",
               "RelativeDocumentMoniker": ".runsettings",
@@ -169,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 6,
               "Title": "README.md",
               "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\README.md",
               "RelativeDocumentMoniker": "README.md",
@@ -181,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 7,
               "Title": "Hooks.cs",
               "DocumentMoniker": "C:\\workspace\\correios-automation-tests\\Hooks\\Hooks.cs",
               "RelativeDocumentMoniker": "Hooks\\Hooks.cs",

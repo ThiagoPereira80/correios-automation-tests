@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 using CorreiosAutomation.Pages;
@@ -12,14 +12,12 @@ namespace CorreiosAutomation.StepDefinitions
     {
         private readonly IWebDriver _driver;
         private readonly CorreiosHomePage _homePage;
-        private readonly CorreiosTrackingPage _trackingPage;
         private string _resultadoEndereco;
 
         public BuscaCorreiosSteps()
         {
             _driver = WebDriverManager.GetDriver();
             _homePage = new CorreiosHomePage(_driver);
-            _trackingPage = new CorreiosTrackingPage(_driver);
         }
 
         [Given(@"que estou na página inicial dos Correios")]
@@ -46,16 +44,14 @@ namespace CorreiosAutomation.StepDefinitions
         [When(@"eu rastrear o código ""(.*)""")]
         public void QuandoEuRastrearOCodigo(string codigo)
         {
-            // Navega para a página de rastreamento e realiza a busca
-            _trackingPage.NavigateTo();
-            _trackingPage.RastrearEncomenda(codigo);
+            _homePage.RastrearEncomenda(codigo);
             System.Threading.Thread.Sleep(1000);
         }
 
         [Then(@"o sistema deve informar que o código não está correto")]
         public void EntaoOSistemaDeveInformarQueOCodigoNaoEstaCorreto()
         {
-            var mensagemErro = _trackingPage.ObterMensagemRastreamentoInvalido();
+            var mensagemErro = _homePage.ObterMensagemRastreamentoInvalido();
             Assert.IsTrue(mensagemErro.Contains("não encontrado") || mensagemErro.Contains("inválido"),
                 $"Esperava mensagem de código inválido, mas obteve: {mensagemErro}");
         }

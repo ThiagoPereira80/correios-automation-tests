@@ -1,0 +1,155 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace CorreiosAutomation.Pages
+{
+    public class CorreiosHomePage
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        // URLs
+        private const string UrlCorreios = "https://buscacepinter.correios.com.br/app/cep/index.php";
+
+        // Seletores dos elementos (ID, XPATH, CSS)
+        private By CampoBuscaCepId => By.Id("cep"); // conforme site real
+        private By BotaoBuscarCepId => By.Id("btn_pesquisar"); // conforme site real
+        private By ResultadoEnderecoXpath => By.XPath("//[@id='resultado-DNEC']/tbody/tr/td[1] | //[@id='resultado-DNEC']/tbody/tr/td[3]");
+        private By ResultadoEnderecoCss => By.CssSelector("#resultado-DNEC > tbody > tr > td:nth-child(1)");
+        private By MensagemErroCep => By.ClassName("mensagem");
+        private By CampoTracking => By.Name("objeto");
+        private By BotaoTracking => By.XPath("//*[@id=\"btn_nbusca\"]");
+        // Captcha: campo de input text com id "captcha"
+        private By CaptchaContainer => By.Id("captcha");
+
+        public CorreiosHomePage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+        }
+
+        public void NavigateTo()
+        {
+            _driver.Navigate().GoToUrl(UrlCorreios);
+            _driver.Manage().Window.Maximize();
+        }
+
+        public void BuscarCep(string cep)
+        {
+            var campo = _wait.Until(d => d.FindElement(CampoBuscaCepId));
+            campo.Clear();
+            campo.SendKeys(cep);
+            _driver.FindElement(BotaoBuscarCepId).Click();
+        }
+
+        public string ObterMensagemCepNaoEncontrado()
+        {
+            try
+            {
+                var msg = _wait.Until(d => d.FindElement(MensagemErroCep));
+                return msg.Text;
+            }
+            catch
+            {
+                return "Mensagem não encontrada";
+            }
+        }
+
+        public string ObterEnderecoEncontrado()
+        {
+            var elementos = driver.FindElements(ResultadoEnderecoXpath); var endereco = string.Join(" ", elementos.Select(e => e.Text).Where(s => !string.IsNullOrWhiteSpace(s)));
+            return elemento.Text;
+        }
+
+        public void VoltarParaPaginaInicial()
+        {
+            _driver.Navigate().Back();
+            // Ou clicar no link de voltar
+            // _driver.FindElement(LinkVoltar).Click();
+        }
+
+        public void RastrearEncomenda(string codigo)
+        {
+            var campo = _wait.Until(d => d.FindElement(CampoTracking));
+            campo.Clear();
+            campo.SendKeys(codigo);
+            _driver.FindElement(BotaoTracking).Click();
+        }
+
+        public string ObterMensagemRastreamentoInvalido()
+        {
+            // Aguarda elemento de erro no rastreamento
+            var msg = _wait.Until(d => d.FindElement(By.ClassName("erro-tracking")));
+            return msg.Text;
+        }
+
+        /// <summary>
+        /// Valida se o campo/contêiner de captcha está presente e visível na página.
+        /// Retorna true se encontrado e exibido, false caso contrário.
+        /// </summary>
+        public bool ValidarCampoCaptcha()
+        {
+            try
+            {
+                var captcha = _wait.Until(d => d.FindElement(CaptchaContainer));
+                if (captcha == null || !captcha.Displayed || !captcha.Enabled)
+                    return false;
+
+                // Verifica se é um input do tipo text (conforme especificado)
+                var tag = captcha.TagName ?? string.Empty;
+                var type = captcha.GetAttribute("type") ?? string.Empty;
+
+                return tag.Equals("input", StringComparison.OrdinalIgnoreCase)
+                       && type.Equals("text", StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Preenche o campo de captcha (input type="text" id="captcha") com o código informado.
+        /// </summary>
+        public void PreencherCaptcha(string codigo)
+        {
+            var campo = _wait.Until(d => d.FindElement(CaptchaContainer));
+            campo.Clear();
+            campo.SendKeys(codigo);
+        }
+
+        /// <summary>
+        /// Retorna o valor atualmente presente no campo captcha (atributo value).
+        /// </summary>
+        public string ObterValorCaptcha()
+        {
+            try
+            {
+                var campo = _wait.Until(d => d.FindElement(CaptchaContainer));
+                return campo.GetAttribute("value") ?? string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        // Métodos para os seletores específicos do teste
+
+        public IWebElement ObterResultadoPorId()
+        {
+            return _wait.Until(d => d.FindElement(By.Id("resultado-endereco"))); // Ajustar ID real
+        }
+
+        public IWebElement ObterResultadoPorXPath()
+        {
+            return _wait.Until(d => d.FindElement(By.XPath("//div[@class='resultado-busca']")));
+        }
+
+        public IWebElement ObterResultadoPorCss()
+        {
+            return _wait.Until(d => d.FindElement(By.CssSelector("div.resultado-busca")));
+        }
+    }
+}

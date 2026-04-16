@@ -1,0 +1,51 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace CorreiosAutomation.Pages
+{
+    public class CorreiosTrackingPage
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        private const string UrlTracking = "https://rastreamento.correios.com.br/app/index.php";
+
+        private By CampoTracking => By.Name("objeto");
+        private By BotaoTracking => By.XPath("//*[@id=\"btn_nbusca\"]");
+        private By MensagemErroTracking => By.ClassName("erro-tracking");
+
+        public CorreiosTrackingPage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+        }
+
+        public void NavigateTo()
+        {
+            _driver.Navigate().GoToUrl(UrlTracking);
+            _driver.Manage().Window.Maximize();
+        }
+
+        public void RastrearEncomenda(string codigo)
+        {
+            var campo = _wait.Until(d => d.FindElement(CampoTracking));
+            campo.Clear();
+            campo.SendKeys(codigo);
+            _driver.FindElement(BotaoTracking).Click();
+        }
+
+        public string ObterMensagemRastreamentoInvalido()
+        {
+            try
+            {
+                var msg = _wait.Until(d => d.FindElement(MensagemErroTracking));
+                return msg.Text;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+    }
+}
